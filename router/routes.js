@@ -1,7 +1,5 @@
-const mongoose = require('mongoose')
 const router = require('express').Router()
 const data = require('../models/model-schema')
-// let data = mongoose.model('person1')
 
 router.get('/',async (req, res)=>{
     let result = await data.find()
@@ -35,7 +33,6 @@ router.delete('/delete/:name',async (req, res) => {
 
 router.put('/update/:id', (req, res) => {
     const _id = req.params.id;
-
 
     data.findOneAndUpdate({_id}, req.body).then(result => {
         console.log('data updated')
