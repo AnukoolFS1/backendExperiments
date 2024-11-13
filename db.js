@@ -1,13 +1,11 @@
-const {MongoClient} = require('mongodb');
+const { MongoClient } = require('mongodb');
 
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://localhost:27017/bookstores';
 
 let dbConnection
 
-
-module.exports = {
-    connectDB : (cb) => {
-        MongoClient.connect(url)
+const connectDB = (cb) => {
+    MongoClient.connect(url)
         .then((client) => {
             dbConnection = client.db()
             cb()
@@ -16,8 +14,13 @@ module.exports = {
             console.log(err)
             return cb(err)
         })
-    },
-    getDB: () => dbConnection
+}
+
+const getDB = () => dbConnection
+
+module.exports = {
+    connectDB,
+    getDB
 }
 
 

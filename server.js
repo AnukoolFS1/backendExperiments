@@ -1,11 +1,28 @@
 const express = require('express');
 const app = express();
-const main = require('./db.js')
+const { connectDB, getDB } = require('./db.js')
 
-main().then(data => console.log(data)).catch(err => console.error(err))
+//connect Database
+let DB
 
-app.get('/', (req,res) => {
-    res.send('testing here')
+connectDB((err) => {
+    if(!err) {
+        console.log('reach till here')
+        app.listen(3000, () => console.log('server has initiated'));
+        DB = getDB()
+    }else{
+        console.error(err)
+    }
 })
 
-app.listen(3000, () => console.log('server has initiated'));
+// route
+app.get('/', (req, res) => {
+    const books = []
+    DB.collection('bookr')
+    .find().sort({author:1})
+    .forEach((book) => books.push(book))
+    .then(() => {
+        res.status(200).json(books)
+    })
+    // res.send('testing here')
+})
